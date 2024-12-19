@@ -12,9 +12,9 @@ node_modules
 
 # Build and production
 dist
-/.next/
+frontend/.next
 out
-/build
+build
 
 # Environment files
 .env*
@@ -27,7 +27,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # Testing
-/coverage
+coverage
 
 # Miscellaneous
 .DS_Store
