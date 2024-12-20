@@ -1,4 +1,5 @@
 "use client";
+import AuthImagePattern from "@/components/AuthImagePattern";
 import { useSignUpMutation } from "@/lib/redux/features/api/apiSlice";
 import {
   CheckCheck,
@@ -10,6 +11,7 @@ import {
   User,
 } from "lucide-react";
 import React from "react";
+import toast from "react-hot-toast";
 
 export default function SignUp() {
   const [signUp, { isLoading: isSigningUp }] = useSignUpMutation();
@@ -22,7 +24,23 @@ export default function SignUp() {
     const password = formData.get("password") as string;
     const confirmPassword = formData.get("confirmPassword") as string;
 
+    if (!fullName || !email || !password || !confirmPassword) {
+      return toast.error("All fields are required");
+    }
+
+    if (password !== confirmPassword) {
+      return toast.error("Passwords do not match");
+    }
+
+    const data = {
+      fullName,
+      email,
+      password,
+      confirmPassword,
+    };
+
     try {
+      console.log(data);
     } catch (error) {}
   };
 
@@ -56,6 +74,7 @@ export default function SignUp() {
                   <User className="size-5 text-base-content/40" />
                 </div>
                 <input
+                  required
                   type="text"
                   className={`input input-bordered w-full pl-10`}
                   placeholder="Mostafa Osama"
@@ -73,6 +92,7 @@ export default function SignUp() {
                   <Mail className="size-5 text-base-content/40" />
                 </div>
                 <input
+                  required
                   type="email"
                   className={`input input-bordered w-full pl-10`}
                   placeholder="you@example.com"
@@ -90,6 +110,7 @@ export default function SignUp() {
                   <Lock className="size-5 text-base-content/40" />
                 </div>
                 <input
+                  required
                   // type={showPassword ? "text" : "password"}
                   className={`input input-bordered w-full pl-10`}
                   placeholder="••••••••"
@@ -117,6 +138,7 @@ export default function SignUp() {
                   <CheckCheck className="size-5 text-base-content/40" />
                 </div>
                 <input
+                  required
                   // type={showPassword ? "text" : "password"}
                   className={`input input-bordered w-full pl-10`}
                   placeholder="••••••••"
@@ -152,6 +174,10 @@ export default function SignUp() {
       </div>
 
       {/* Right side */}
+      <AuthImagePattern
+        title="Sign up to your account"
+        subtitle="Sign up to your account to get started with your free account"
+      />
     </div>
   );
 }
