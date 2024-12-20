@@ -1,6 +1,8 @@
 "use client";
 import AuthImagePattern from "@/components/AuthImagePattern";
 import { useSignUpMutation } from "@/lib/redux/features/api/apiSlice";
+import { ApiError } from "@/utils/api-error";
+import { AxiosError } from "axios";
 import {
   CheckCheck,
   Eye,
@@ -10,11 +12,19 @@ import {
   MessageSquare,
   User,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function SignUp() {
-  const [signUp, { isLoading: isSigningUp }] = useSignUpMutation();
+  const [signUp, { isLoading: isSigningUp, error: signUpError }] =
+    useSignUpMutation();
+
+  useEffect(() => {
+    if (signUpError) {
+      const error = ApiError.generate(signUpError as AxiosError);
+      toast.error(error.description || error.title);
+    }
+  }, [signUpError]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,9 +49,7 @@ export default function SignUp() {
       confirmPassword,
     };
 
-    try {
-      console.log(data);
-    } catch (error) {}
+    await signUp(data);
   };
 
   return (
