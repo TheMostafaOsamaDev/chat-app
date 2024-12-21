@@ -14,7 +14,12 @@ export const apiSlice = createApi({
     signUp: builder.mutation<User, SignUpParams>({
       query: (data) => ({ url: "/auth/signup", method: "POST", data }),
     }),
+    // Check Auth
+    checkAuth: builder.query<User, void>({
+      query: () => ({ url: "/auth/check", method: "GET" }),
+    }),
   }),
 });
 
-export const { useLogInMutation, useSignUpMutation } = apiSlice;
+export const { useLogInMutation, useSignUpMutation, useCheckAuthQuery } =
+  apiSlice;
